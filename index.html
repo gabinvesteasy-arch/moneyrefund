@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Refund Wallet |  AK ANDREW KIM</title>
+    <title>Crypto Refund Wallet |  BR BHARTI RANGWANI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -411,8 +411,8 @@
             </ul>
         </nav>
         <div class="user-profile">
-            <div class="user-avatar">AK</div>
-            <div> andrew kim</div>
+            <div class="user-avatar">BR</div>
+            <div>Bharti Rangwani</div>
         </div>
     </header>
     
@@ -422,14 +422,14 @@
         <div class="wallet-card">
             <div class="wallet-header">
                 <div class="user-info">
-                    <div class="user-name">ANDREW KIM</div>
+                    <div class="user-name">BHARTI RANGWANI</div>
                     <div class="user-status"><i class="fas fa-circle"></i> Verified Account</div>
                 </div>
                 <div class="wallet-type">Refund Wallet</div>
             </div>
             
             <p class="subtitle">Secure cryptocurrency storage with easy refund management</p>
-            <div class="balance">$0.00</div>
+            <div class="balance">$1,000,000.00</div>
             <div class="crypto-balance">0.000000BTC</div>
             
             <div class="actions">
@@ -465,7 +465,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount ($)</label>
-                        <input type="number" id="amount" placeholder="Enter amount" required>
+                        <input type="number" id="amount" placeholder="Enter amount" value="1000000" required>
                     </div>
                 </div>
                 
@@ -490,8 +490,8 @@
         <i class="fab fa-ethereum"></i>
         <span>WITHDRAW</span>
     </div>
-    <div>3.88BTC</div>
-    <div>-$430,176.00</div>
+    <div>4000 CAD</div>
+    <div>CAD 4,000.00</div>
    <div style="color: #4caf50; font-weight: bold;">
     <span style="background: #4caf50; color: white; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 5px;"></span>
     COMPLETED
@@ -508,8 +508,8 @@
         <i class="fab fa-ethereum"></i>
         <span>WITHDRAW</span>
     </div>
-    <div>3.88BTC</div>
-    <div>$430,176.00</div>
+    <div>4000 CAD</div>
+    <div>CAD 4,000.00</div>
     <div style="color: #ff3b30; font-weight: bold;">
         <span style="background: #ff3b30; color: white; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 5px;">!</span>
         REJECTED
@@ -520,8 +520,8 @@
         <i class="fas fa-exchange-alt"></i>
         <span>WITHDRAW</span>
     </div>
-    <div>0.912</div>
-    <div>$100,000.00</div>
+    <div>4000 CAD</div>
+    <div>CAD 4,000.00</div>
     <div style="color: #ff3b30; font-weight: bold;">
         <span style="background: #ff3b30; color: white; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 5px;">!</span>
         REJECTED
@@ -606,7 +606,7 @@
             
             // Update balance with a slight animation
             const balanceElement = document.querySelector('.balance');
-            let balance = 0.00;
+            let balance = 1000000.00;
             let displayedBalance = 0;
             
             const balanceInterval = setInterval(() => {
@@ -615,7 +615,7 @@
                     displayedBalance = balance;
                     clearInterval(balanceInterval);
                 }
-                balanceElement.textContent = '$' + displayedBalance.toLocaleString(undefined, {minimumFractionDigits: 3});
+                balanceElement.textContent = '$' + displayedBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
             }, 20);
             
             // Form submission
