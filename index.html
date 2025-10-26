@@ -1,131 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-  body {
-    margin:0;
-    font-family: Arial, sans-serif;
-    background: #0a0e17;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* Modal */
-  .modal {
-    position: relative;
-    width: 400px;
-    background: linear-gradient(135deg,#1c1c2e,#2a2a4d);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-    animation: popIn 0.5s ease-out;
-  }
-
-  @keyframes popIn {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  .ribbon {
-    position: absolute;
-    top: 15px;
-    left: -5px;
-    background: linear-gradient(90deg,#ff3b30,#ff6b6b);
-    padding: 6px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 4px 15px rgba(255,59,48,0.3);
-  }
-
-  .ribbon::before {
-    content: "⚠️";
-  }
-
-  h2 {
-    margin-top: 50px;
-    font-size: 22px;
-    color: #ff4d4d;
-    text-align: center;
-  }
-
-  p {
-    margin: 12px 0;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .amount {
-    margin: 10px 0;
-    background: rgba(255,255,255,0.05);
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-    color: #ffd166;
-    font-size: 16px;
-  }
-
-  .amount span {
-    font-size: 18px;
-    color: #ff3b30;
-  }
-
-  .btn {
-    margin-top: 15px;
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  .btn-close {
-    background: #555;
-    color: #fff;
-  }
-
-  /* Floating coins */
-  .coin {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background: gold;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-weight: bold;
-    animation: float 5s linear infinite;
-  }
-
-  .coin:nth-child(1) { left: 20%; animation-delay: 0s;}
-  .coin:nth-child(2) { left: 50%; animation-delay: 1s;}
-  .coin:nth-child(3) { left: 70%; animation-delay: 2s;}
-
-  @keyframes float {
-    0% { transform: translateY(0) rotate(0deg);}
-    50% { transform: translateY(-80px) rotate(180deg);}
-    100% { transform: translateY(0) rotate(360deg);}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction On Hold - Demonstration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .notification-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(40%, -40%);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header h1 .icon {
+            font-size: 32px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .alert-section {
+            background-color: #fff8e6;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .alert-section h3 {
+            color: #b08c2c;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .fee-section {
+            background-color: #f9f9f9;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .fee-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .fee-amount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px dashed #e1e1e1;
+        }
+        
+        .fee-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .fee-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+        
+        .instructions {
+            margin: 25px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .warning-section {
+            background-color: #ffeaea;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .warning-section h3 {
+            color: #721c24;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .warning-list {
+            padding-left: 20px;
+        }
+        
+        .warning-list li {
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e1e1;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .demo-label {
+            display: inline-block;
+            background: #95a5a6;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .fee-amount {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<div class="modal">
-  <div class="ribbon">Attention</div>
-        <p>Your fund transfer is currently frozen pending verification</p>
+    <div class="notification-container">
+        <div class="header">
+            <h1>
+                <span class="icon">⚠️</span>
+                Transaction On Hold - Immediate Action Required
+            </h1>
+            <p>Your fund transfer is currently frozen pending verification</p>
         </div>
         
         <div class="content">
@@ -180,19 +284,8 @@
                     </div>
                 </div>
             </div>
-  <button class="btn btn-close" onclick="closeDemo()">Close</button>
-
-  <!-- floating coins for visual effect -->
-  <div class="coin">$</div>
-  <div class="coin">$</div>
-  <div class="coin">$</div>
-</div>
-
-<script>
-function closeDemo(){
-  document.querySelector('.modal').style.display = 'none';
-}
-</script>
-
+          
+        </div>
+    </div>
 </body>
 </html>
