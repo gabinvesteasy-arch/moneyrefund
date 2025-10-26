@@ -559,19 +559,105 @@
             </div>
         </div>
     </main>
-    
-    <!-- Modal -->
-    <div class="modal" id="errorModal">
-        <div class="modal-content">
-           
-          <h2>Withdrawal IN PROCESS</h2>
-<p>THE TRANSACTION IS IN THE PROCESS.</p>
+  <!-- Modal -->
+<div class="modal" id="errorModal" role="dialog" aria-labelledby="modalTitle" aria-modal="true" hidden>
+  <div class="modal-overlay" onclick="closeModal()"></div>
 
-            <button class="btn btn-primary" style="margin-top: 20px;" onclick="closeModal()">
-                <i class="fas fa-times"></i> Close
-            </button>
-        </div>
+  <div class="modal-content" role="document" tabindex="-1">
+    <header class="modal-header">
+      <h2 id="modalTitle" class="modal-title">
+        <span class="warning-icon" aria-hidden="true">⚠️</span>
+        <span class="title-text">Transaction On Hold</span>
+      </h2>
+      <div class="attention-badge" aria-hidden="true">Attention</div>
+    </header>
+
+    <div class="modal-body">
+      <p>We are reviewing your transaction right now.</p>
+      <p>This is a routine administrative review and does not necessarily mean there is an issue.</p>
+      <p>Our compliance team may need additional documentation to complete the review.</p>
+      <p>Please contact <strong>compliance@yourdomain.example</strong> or call <strong>+1 (555) 123‑4567</strong> for assistance.</p>
+
+      <!-- PLACEHOLDER: If your organization has a lawful, verified fee to disclose,
+           add it here in place of the following comment. DO NOT display any
+           payment demands unless legally required and verified by your compliance/legal team.
+           Example (internal only): <p><strong>Administrative cost (example): CAD 8,000</strong></p> -->
     </div>
+
+    <footer class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+      <button class="btn btn-primary" onclick="openSupport()">Contact Support</button>
+    </footer>
+  </div>
+</div>
+
+<style>
+/* Basic modal layout */
+.modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); }
+.modal-content { position: relative; width: 92%; max-width: 520px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 20px 22px; transform: translateY(12px); animation: fadeInUp 360ms ease-out both; }
+
+/* Header */
+.modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.modal-title { font-size: 1.25rem; margin: 0; display:flex; align-items:center; gap:10px; }
+.warning-icon { display:inline-block; animation: pulse 1300ms ease-in-out infinite; transform-origin:center; }
+.title-text { color: #b22222; font-weight: 700; }
+
+/* Attention badge */
+.attention-badge { background: #ffe6e6; color: #8b0000; padding: 6px 10px; border-radius: 999px; font-weight:700;
+  box-shadow: 0 2px 6px rgba(139,0,0,0.08); animation: popIn 550ms cubic-bezier(.2,.9,.2,1); }
+
+/* Body text (multiple short sentences) */
+.modal-body p { margin: 8px 0; line-height: 1.45; color: #222; }
+
+/* Footer buttons */
+.modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top: 14px; }
+.btn { border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight:600; }
+.btn-primary { background: linear-gradient(180deg,#1f6feb,#1557d6); color: #fff; box-shadow: 0 6px 18px rgba(21,87,214,0.18); }
+.btn-secondary { background: #f2f4f7; color: #222; }
+
+/* Small animations */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px) scale(.995);} to { opacity: 1; transform: translateY(0) scale(1);} }
+@keyframes popIn { 0% { transform: scale(.85); opacity: 0;} 60% { transform: scale(1.03);} 100% { transform: scale(1); opacity: 1;} }
+@keyframes pulse { 0% { transform: scale(1);} 50% { transform: scale(1.12);} 100% { transform: scale(1);} }
+
+/* Responsive */
+@media (max-width:420px){ .modal-content{ padding:16px; } .modal-title{ font-size:1.05rem } }
+</style>
+
+<script>
+/* Basic control functions */
+function openModal() {
+  const m = document.getElementById('errorModal');
+  m.hidden = false;
+  // focus for accessibility
+  const content = m.querySelector('.modal-content');
+  content.focus();
+}
+
+function closeModal() {
+  const m = document.getElementById('errorModal');
+  m.hidden = true;
+}
+
+/* Example support action */
+function openSupport(){
+  // open support chat or mailto; customize as needed
+  window.location.href = "mailto:compliance@yourdomain.example?subject=Transaction%20Review%20Assistance";
+}
+
+/* Optional: close on Esc */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* Prevent clicks inside modal-content from closing it (overlay handles close) */
+document.querySelectorAll('.modal-content').forEach(el => {
+  el.addEventListener('click', (e) => e.stopPropagation());
+});
+</script>
+
     
     <!-- Footer -->
     <footer>
