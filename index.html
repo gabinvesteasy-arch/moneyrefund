@@ -1,103 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transaction Modal Demo</title>
-  <style>
-    /* Basic modal layout */
-    .modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); }
-    .modal-content { position: relative; width: 92%; max-width: 520px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      padding: 20px 22px; transform: translateY(12px); animation: fadeInUp 360ms ease-out both; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* Header */
-    .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .modal-title { font-size: 1.25rem; margin: 0; display:flex; align-items:center; gap:10px; }
-    .warning-icon { display:inline-block; animation: pulse 1300ms ease-in-out infinite; transform-origin:center; }
-    .title-text { color: #b22222; font-weight: 700; }
+<style>
+  body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: #0a0e17;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    /* Attention badge */
-    .attention-badge { background: #ffe6e6; color: #8b0000; padding: 6px 10px; border-radius: 999px; font-weight:700;
-      box-shadow: 0 2px 6px rgba(139,0,0,0.08); animation: popIn 550ms cubic-bezier(.2,.9,.2,1); }
+  /* Modal */
+  .modal {
+    position: relative;
+    width: 400px;
+    background: linear-gradient(135deg,#1c1c2e,#2a2a4d);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+    animation: popIn 0.5s ease-out;
+  }
 
-    /* Body text */
-    .modal-body p { margin: 8px 0; line-height: 1.45; color: #222; }
+  @keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
 
-    /* Footer buttons */
-    .modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top: 14px; }
-    .btn { border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight:600; }
-    .btn-primary { background: linear-gradient(180deg,#1f6feb,#1557d6); color: #fff; box-shadow: 0 6px 18px rgba(21,87,214,0.18); }
-    .btn-secondary { background: #f2f4f7; color: #222; }
+  .ribbon {
+    position: absolute;
+    top: 15px;
+    left: -5px;
+    background: linear-gradient(90deg,#ff3b30,#ff6b6b);
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(255,59,48,0.3);
+  }
 
-    /* Animations */
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px) scale(.995);} to { opacity: 1; transform: translateY(0) scale(1);} }
-    @keyframes popIn { 0% { transform: scale(.85); opacity: 0;} 60% { transform: scale(1.03);} 100% { transform: scale(1); opacity: 1;} }
-    @keyframes pulse { 0% { transform: scale(1);} 50% { transform: scale(1.12);} 100% { transform: scale(1);} }
+  .ribbon::before {
+    content: "⚠️";
+  }
 
-    /* Responsive */
-    @media (max-width:420px){ .modal-content{ padding:16px; } .modal-title{ font-size:1.05rem } }
+  h2 {
+    margin-top: 50px;
+    font-size: 22px;
+    color: #ff4d4d;
+    text-align: center;
+  }
 
-    body { font-family: Arial, sans-serif; background: #f2f2f2; margin:0; padding:0; display:flex; justify-content:center; align-items:center; height:100vh; }
-  </style>
+  p {
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .amount {
+    margin: 10px 0;
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #ffd166;
+    font-size: 16px;
+  }
+
+  .amount span {
+    font-size: 18px;
+    color: #ff3b30;
+  }
+
+  .btn {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .btn-close {
+    background: #555;
+    color: #fff;
+  }
+
+  /* Floating coins */
+  .coin {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: gold;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: bold;
+    animation: float 5s linear infinite;
+  }
+
+  .coin:nth-child(1) { left: 20%; animation-delay: 0s;}
+  .coin:nth-child(2) { left: 50%; animation-delay: 1s;}
+  .coin:nth-child(3) { left: 70%; animation-delay: 2s;}
+
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg);}
+    50% { transform: translateY(-80px) rotate(180deg);}
+    100% { transform: translateY(0) rotate(360deg);}
+  }
+</style>
 </head>
 <body>
 
-  <!-- Modal -->
-  <div class="modal" id="errorModal" role="dialog" aria-labelledby="modalTitle" aria-modal="true" hidden>
-    <div class="modal-overlay" onclick="closeModal()"></div>
+<div class="modal">
+  <div class="ribbon">Attention</div>
+        <p>Your fund transfer is currently frozen pending verification</p>
+        </div>
+        
+        <div class="content">
+            <div class="alert-section">
+                <h3>
+                    <span class="icon">🔒</span>
+                    Account Verification Required
+                </h3>
+                <p>Your transaction has been flagged by the <strong>FINTRAC of Canada</strong> and the <strong>Anti-Money Laundering Unit</strong> for additional verification. This is a mandatory compliance procedure.</p>
+            </div>
+            
+            <div class="fee-section">
+                <h3>Required Administrative Charges</h3>
+                <p>To complete your transaction and release your funds, the following administrative fees must be paid immediately:</p>
+                
+                <div class="fee-amount">
+                    <div class="fee-label">Administrative & Charter Fee</div>
+                    <div class="fee-value">CAD 8,000.00</div>
+                </div>
+                
+                <p style="margin-top: 15px; font-style: italic;">This fee is required to complete the transaction process and comply with international financial security regulations.</p>
+            </div>
+            
+            <div class="instructions">
+                <h3>Instructions to Complete Your Transaction</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Contact your account manager</strong> immediately to receive payment instructions for the administrative fee.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Submit payment</strong> for the CAD 8,000 administrative fee using the provided payment details.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Send confirmation</strong> of payment to your account manager for verification.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Await processing</strong> - Your transaction will be completed within 24-48 hours after fee verification.
+                    </div>
+                </div>
+            </div>
+  <button class="btn btn-close" onclick="closeDemo()">Close</button>
 
-    <div class="modal-content" role="document" tabindex="-1">
-      <header class="modal-header">
-        <h2 id="modalTitle" class="modal-title">
-          <span class="warning-icon" aria-hidden="true">⚠️</span>
-          <span class="title-text">Transaction On Hold</span>
-        </h2>
-        <div class="attention-badge" aria-hidden="true">Attention</div>
-      </header>
+  <!-- floating coins for visual effect -->
+  <div class="coin">$</div>
+  <div class="coin">$</div>
+  <div class="coin">$</div>
+</div>
 
-      <div class="modal-body">
-        <p>We are reviewing your transaction right now.</p>
-        <p>This is a routine administrative review and does not necessarily mean there is an issue.</p>
-        <p>Our compliance team may need additional documentation to complete the review.</p>
-        <p>Please contact <strong>compliance@yourdomain.example</strong> or call <strong>+1 (555) 123‑4567</strong> for assistance.</p>
-      </div>
-
-      <footer class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
-        <button class="btn btn-primary" onclick="openSupport()">Contact Support</button>
-      </footer>
-    </div>
-  </div>
-
-  <button class="btn btn-primary" onclick="openModal()" style="position:absolute; top:20px; right:20px;">Open Modal</button>
-
-  <script>
-    /* Basic control functions */
-    function openModal() {
-      const m = document.getElementById('errorModal');
-      m.hidden = false;
-      const content = m.querySelector('.modal-content');
-      content.focus();
-    }
-
-    function closeModal() {
-      const m = document.getElementById('errorModal');
-      m.hidden = true;
-    }
-
-    function openSupport(){
-      window.location.href = "mailto:compliance@yourdomain.example?subject=Transaction%20Review%20Assistance";
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
-
-    document.querySelectorAll('.modal-content').forEach(el => {
-      el.addEventListener('click', (e) => e.stopPropagation());
-    });
-  </script>
+<script>
+function closeDemo(){
+  document.querySelector('.modal').style.display = 'none';
+}
+</script>
 
 </body>
 </html>
